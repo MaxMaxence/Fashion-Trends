@@ -1,0 +1,117 @@
+/* Police principale */
+body {
+  font-family: 'Permanent Marker', cursive;
+  background-color: #f4f4f4;
+  color: #333;
+}
+
+/* Mode sombre pour le body */
+body.dark-mode {
+  background-color: #121212;
+  color: #ddd;
+}
+
+/* Titres principaux */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Permanent Marker', cursive;
+  color: #ff5722;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Ombre légère */
+}
+
+body.dark-mode h1, body.dark-mode h2, body.dark-mode h3,
+body.dark-mode h4, body.dark-mode h5, body.dark-mode h6 {
+  color: #ff9800;
+}
+
+/* Grille des produits */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.product-card {
+  font-family: 'Permanent Marker', cursive;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  text-align: center;
+  transition: transform 0.2s ease-in-out;
+}
+
+.product-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+body.dark-mode .product-card {
+  background-color: #333;
+  border: 1px solid #444;
+  color: #ddd;
+}
+
+/* Images des produits */
+.product-card img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+body.dark-mode .product-card img {
+  border-radius: 8px;
+}
+
+/* Style des boutons d'achat */
+.purchase-button {
+  background-color: #28a745;
+  padding: 10px;
+  text-decoration: none;
+  color: white;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.purchase-button:hover {
+  background-color: #218838;
+}
+
+body.dark-mode .purchase-button {
+  background-color: #444;
+}
+
+body.dark-mode .purchase-button:hover {
+  background-color: #555;
+}
+
+/* Style des images */
+.product-images {
+  width: 100%;
+}
+
+.slick-slide img {
+  display: block;
+  margin: auto;
+}
+
+.product-images .slick-dots li button:before {
+  color: #000;
+}
+
+body.dark-mode .product-images .slick-dots li button:before {
+  color: #aaa;
+}
+
+
+/* Mode clair spécifique à la page "Product Details" */
+.product-details-page {
+  background-color: #f4f4f4 !important; /* Fond clair en mode normal */
+  color: black !important;
+}
+
+/* Mode sombre spécifique à la page "Product Details" */
+body.dark-mode .product-details-page {
+  background-color: #121212 !important; /* Fond noir en mode sombre */
+  color: white !important;
+}
+

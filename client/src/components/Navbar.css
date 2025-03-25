@@ -1,0 +1,156 @@
+/* Style général de la Navbar */
+.navbar {
+  background-color: black;
+  color: white;
+  padding: 5px 20px; /* Réduit l'espacement vertical */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  height: 35px; /* Réduit la hauteur de la Navbar */
+}
+
+.navbar-content {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.navbar-favorites {
+  margin-right:30px;
+}
+
+.navbar-title {
+  font-size: 1.2em; /* Réduit la taille du texte */
+  font-weight: bold;
+  color: #ff9800;
+  text-align: center;
+}
+
+body.dark-mode .navbar {
+  background-color: #1e1e1e;
+  color: #ddd;
+}
+
+body.dark-mode .navbar-title {
+  color: #ffc107;
+}
+
+.hamburger {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2em; /* Réduit la taille de l'icône */
+  cursor: pointer;
+  padding: 0; /* Supprime l'espacement */
+}
+
+body.dark-mode .hamburger {
+  color: #ddd;
+}
+
+/* Menu latéral */
+.side-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 200px;
+  height: 100%;
+  background-color: black;
+  color: white;
+  padding-top: 60px;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease-in-out;
+}
+
+.side-menu.open {
+  transform: translateX(0);
+}
+
+.side-menu ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.side-menu ul li {
+  padding: 20px;
+  text-align: left;
+}
+
+.side-menu ul li a {
+  font-family: 'Permanent Marker', cursive;
+  font-size: 1.2em;
+  color: white;
+  text-decoration: none;
+}
+
+.side-menu ul li a:hover {
+  color: #ff5722;
+}
+
+body.dark-mode .side-menu {
+  background-color: #1e1e1e;
+  color: #ddd;
+}
+
+body.dark-mode .side-menu ul li a {
+  color: #ddd;
+}
+
+body.dark-mode .side-menu ul li a:hover {
+  color: #ffc107;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5em;
+  cursor: pointer;
+}
+
+body.dark-mode .close-button {
+  color: #ddd;
+}
+
+/* Bouton de changement de thème */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #4ca1af, #2c3e50);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 12px;
+  font-size: 1.2em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.theme-toggle:hover {
+  background: linear-gradient(135deg, #2c3e50, #4ca1af);
+  box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.3);
+  transform: scale(1.05);
+}
+
+body.dark-mode .theme-toggle {
+  background: linear-gradient(135deg, #1e1e1e, #444);
+  color: #ddd;
+}
+
+.theme-toggle .icon {
+  font-size: 1.2em;
+}

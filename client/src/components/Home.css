@@ -1,0 +1,125 @@
+.home-page {
+  text-align: center;
+  padding: 50px 20px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Titre principal */
+.welcome-title {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #ff7f00;
+  margin-bottom: 10px;
+}
+
+.welcome-title span {
+  color: #fff;
+}
+
+/* Description */
+.welcome-description {
+  font-size: 1.5rem;
+  color: #ccc;
+  max-width: 700px;
+  margin: 0 auto 40px;
+}
+
+/* Conteneur des saisons */
+.seasons-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Cartes des saisons */
+.season-card {
+  width: 100%;
+  height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 2rem;
+  font-weight: bold;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+  border-radius: 15px;
+  text-decoration: none;
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease-in-out;
+}
+
+.season-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* Bouton Explorer */
+.explore-button-container {
+  margin-top: 40px;
+}
+
+.explore-btn {
+  padding: 15px 40px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #fff;
+  background: #ff7f00;
+  border-radius: 30px;
+  text-decoration: none;
+  transition: all 0.3s ease-in-out;
+}
+
+.explore-btn:hover {
+  background: #ff4500;
+  transform: scale(1.1);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .seasons-container {
+    grid-template-columns: 1fr;
+  }
+
+  .season-card {
+    height: 180px;
+  }
+
+  .welcome-title {
+    font-size: 2.5rem;
+  }
+
+  .welcome-description {
+    font-size: 1.2rem;
+  }
+
+  .explore-btn {
+    font-size: 1.2rem;
+    padding: 12px 30px;
+  }
+}
+
+/* Mode clair */
+.home-page.light {
+  background-color: #ffffff;
+  color: #333;
+}
+
+.home-page.light .season-card {
+  border: 2px solid #ddd;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Mode sombre */
+.home-page.dark {
+  background-color: #1a1a1a;
+  color: #f1f1f1;
+}
+
+.home-page.dark .season-card {
+  border: 2px solid #444;
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
+}

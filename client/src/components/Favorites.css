@@ -1,0 +1,124 @@
+.favorites-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  
+  .favorites-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Adapte les colonnes automatiquement */
+    gap: 20px; /* Espacement entre les produits */
+    justify-content: center;
+    max-width: 1400px; /* Ajuste la largeur maximale */
+    margin: 0 auto; /* Centre la grille */
+}
+
+/* S'assurer que sur grand écran, il y a 4 colonnes */
+@media (min-width: 1200px) {
+    .favorites-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* Pour les écrans moyens (tablettes) */
+@media (max-width: 1199px) {
+    .favorites-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Pour les petits écrans (mobiles) */
+@media (max-width: 900px) {
+    .favorites-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .favorites-grid {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
+
+  
+  .favorite-item {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .favorite-image {
+    max-width: 100%;
+    max-height: 200px; /* Fixe une hauteur maximale pour les images */
+    width: auto; /* Garde les proportions */
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 10px;
+  }
+  
+  .favorite-link {
+    text-decoration: none;
+    color: black;
+  }
+  
+  .favorite-link:hover h3 {
+    color: #007bff;
+  }
+  
+  .favorite-icon:hover {
+    transform: scale(1.1); /* Effet léger au survol */
+  }
+
+  .favorites-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.favorites-title {
+    font-size: 2em;
+    font-weight: bold;
+    color: #f9a825;
+    margin-bottom: 20px;
+}
+
+  
+  .no-favorites-container {
+    text-align: center;
+    margin-top: 50px;
+    color: #555;
+  }
+  
+  .no-favorites-container h1 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+  }
+  
+  .no-favorites-container p {
+    font-size: 1.2rem;
+    color: #888;
+  }
+  
+  .explore-button {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #ff9800;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .explore-button:hover {
+    background-color: #e68a00;
+  }
+  

@@ -1,0 +1,602 @@
+.product-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.product-card {
+  cursor: pointer;
+}
+
+.filters-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  margin: 20px auto;
+  flex-wrap: wrap;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.filter-group label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.filter-group select {
+  padding: 8px;
+  font-size: 1em;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  background-color: #f9f9f9;
+  outline: none;
+  transition: border-color 0.3s ease-in-out;
+}
+
+.filter-group select:focus {
+  border-color: #007BFF;
+}
+
+.type-filter {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.type-item {
+  cursor: pointer;
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+
+.type-item img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+}
+
+.type-item span {
+  display: block;
+  margin-top: 5px;
+  font-size: 14px;
+}
+
+.type-item.selected {
+  transform: scale(1.1);
+  border: 2px solid #ff4500;
+  border-radius: 10px;
+}
+
+/* Dropdown pour le type */
+/* Couleur orange pour les noms des types */
+/* Couleur orange pour les noms des types */
+/* Dropdown pour le type */
+/* Conteneur principal du dropdown */
+/* Conteneur principal du dropdown */
+.filter-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* En-tête du dropdown (Type) */
+/* Style de la flèche (icône en orange) */
+.filter-dropdown-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 15px;
+  background-color: #fff;
+  border: 2px solid #ff4500; /* Contour orange */
+  border-radius: 5px;
+  cursor: pointer;
+  color: #000;
+  font-weight: bold;
+}
+
+.filter-dropdown-header:hover {
+  background-color: #f1f1f1;
+}
+
+.filter-dropdown-header span {
+  margin-right: 8px; /* Ajoute un espace entre le texte et la flèche */
+}
+
+.dropdown-arrow {
+  width: 1px;
+  height: 1px;
+  border: solid #ff4500; /* Couleur orange */
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+  transform: rotate(45deg); /* Flèche vers le bas */
+  transition: transform 0.3s ease-in-out;
+}
+
+.dropdown-arrow.open {
+  transform: rotate(-135deg); /* Flèche vers le haut */
+}
+
+/* Menu déroulant */
+.filter-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  display: flex; /* Affiche les options horizontalement */
+  gap: 15px;
+  background-color: #a8a8a8; /* Couleur de fond beige clair */
+  padding: 15px;
+  border: 2px solid #ff4500; /* Contour orange */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  overflow-x: auto; /* Ajoute un défilement horizontal si nécessaire */
+  transition: opacity 0.3s ease, transform 0.3s ease; /* Animation fluide */
+}
+
+/* Masquer le menu lorsqu'il est fermé */
+.filter-dropdown-menu.hidden {
+  display: none;
+}
+
+/* Élément individuel dans le menu */
+.filter-dropdown-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 10px;
+  font-weight: bold;
+  border: 1px solid transparent;
+  border-radius: 5px;
+}
+
+.filter-dropdown-item.active {
+  background-color: #ff9800;
+  color: white;
+  border-color: #ff9800;
+}
+
+.filter-dropdown-item img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  margin-bottom: 5px;
+}
+
+.filter-dropdown-item span {
+  display: block;
+  font-size: 14px;
+  color: #ff4500; /* Texte orange */
+}
+
+
+.filter-dropdown-item:hover {
+  background-color: #ff5722;
+  color: white;
+}
+
+/* Menu déroulant caché par le menu latéral */
+.side-menu.open + .filter-dropdown {
+  display: none; /* Cache le menu type lorsque le menu latéral est ouvert */
+}
+
+/* Conteneur pour les menus déroulants (types et couleurs) */
+.filters-dropdown-wrapper {
+  display: flex;
+  gap: 20px; /* Augmentez cet espace pour un espacement plus large */
+  justify-content: flex-start; /* Alignement horizontal */
+  margin: 20px 0; /* Espacement vertical */
+}
+
+
+/* Conteneur principal pour les couleurs */
+/* Conteneur pour les options de couleur */
+.color-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(70px, 1fr)); /* Adapte le nombre de colonnes */
+  gap: 20px; /* Espacement entre les éléments */
+  justify-content: center; /* Centre le contenu */
+  margin-top: 10px;
+  padding: 10px; /* Ajoute un espace intérieur */
+  background-color: #f5f5f5; /* Fond léger pour distinguer */
+  border-radius: 8px; /* Bords arrondis pour un aspect plus doux */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Ajoute une ombre légère */
+}
+
+.color-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 colonnes fixes */
+  gap: 15px; /* Espacement entre les éléments */
+  margin: 10px 0;
+  padding: 10px;
+  max-height: 300px; /* Limite la hauteur totale du menu */
+  overflow-y: auto; /* Ajoute une barre de défilement verticale */
+  overflow-x: hidden; /* Désactive le défilement horizontal */
+  background-color: #f5f5f5; /* Optionnel, fond clair */
+  border-radius: 8px; /* Bords arrondis */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Ombre légère */
+}
+
+/* Ajout d'un style personnalisé pour la barre de défilement */
+.color-grid::-webkit-scrollbar {
+  width: 8px; /* Largeur de la barre */
+}
+
+.color-grid::-webkit-scrollbar-thumb {
+  background-color: #ff9800; /* Couleur de la barre */
+  border-radius: 4px; /* Coins arrondis */
+}
+
+.color-grid::-webkit-scrollbar-track {
+  background-color: #e0e0e0; /* Couleur de l'arrière-plan de la barre */
+}
+/* Élément individuel (cercle + texte) */
+.color-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); /* Colonnes flexibles */
+  gap: 15px; /* Espacement entre les éléments */
+  justify-content: center; /* Centre horizontalement */
+  align-content: start; /* Aligne les colonnes en haut */
+  padding: 10px;
+  max-width: 400px; /* Ajuste pour garder une largeur fixe */
+  margin: auto; /* Centre la grille dans le conteneur */
+}
+
+
+
+
+.color-option span {
+  margin-top: 5px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #333; /* Texte sombre pour une meilleure lisibilité */
+  text-align: center;
+}
+
+.color-option:hover {
+  transform: scale(1.1); /* Effet de zoom */
+}
+
+/* Cercles colorés */
+.color-circle {
+  width: 50px; /* Taille du cercle */
+  height: 50px; /* Taille du cercle */
+  border-radius: 50%; /* Cercle parfait */
+  border: 2px solid #ccc; /* Bordure grise */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Ombre légère */
+  margin-bottom: 8px; /* Espacement avec le texte */
+}
+
+
+.color-circle-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.color-circle-wrapper:hover {
+  transform: scale(1.1); /* Zoom léger */
+}
+.color-circle-wrapper:hover .color-circle {
+  transform: scale(1.1); /* Zoom léger au survol */
+  border-color: #ff4500; /* Bord orange au survol */
+}
+
+.color-circle-wrapper span {
+  font-size: 14px;
+  font-weight: bold;
+  color: #ff5722; /* Couleur du texte */
+  text-transform: capitalize; /* Première lettre en majuscule */
+}
+
+.color-circle-wrapper.active .color-circle {
+  border-color: #ff9800; /* Bordure orange pour le cercle actif */
+  box-shadow: 0 4px 10px rgba(255, 152, 0, 0.6); /* Ombre colorée */
+}
+.color-option:hover .color-circle {
+  border: 3px solid #ff4500; /* Met en avant au survol */
+}
+
+/* Couleurs spécifiques */
+.color-circle.bleu {
+  background-color: blue;
+}
+
+.color-circle.rouge {
+  background-color: red;
+}
+
+.color-circle.vert {
+  background-color: green;
+}
+
+.color-circle.jaune {
+  background-color: yellow;
+}
+
+.color-circle.noir {
+  background-color: black;
+}
+
+.color-circle.blanc {
+  background-color: white;
+  border: 2px solid black; /* Contour noir pour le blanc */
+}
+
+.color-circle.marron {
+  background-color: brown;
+}
+
+.color-circle.rose {
+  background-color: pink;
+}
+
+.color-circle.orange {
+  background-color: orange;
+}
+
+.color-circle.gris {
+  background-color: gray;
+}
+
+.color-circle.violet {
+  background-color: purple;
+}
+
+.color-circle.beige {
+  background-color: beige;
+}
+
+.color-circle.cyan {
+  background-color: cyan;
+}
+
+.color-circle.doré {
+  background-color: gold;
+}
+
+.color-circle.dark-blue {
+  background-color: #00008b;
+}
+
+.color-circle.vinyle-cerise {
+  background-color: #b22222;
+}
+
+.color-circle.noir-delave {
+  background-color: #696969;
+}
+
+/* Ajoutez d'autres couleurs spécifiques si nécessaire */
+
+/* Ajout pour "Toutes" */
+.color-circle.toutes {
+  background: linear-gradient(135deg, red, orange, yellow, green, blue, purple);
+  border: none;
+}
+
+
+.price-filter {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: -15px;
+}
+
+.price-filter label {
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #ff4500; /* Texte orange */
+}
+
+.price-range-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.price-range-wrapper input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 150px;
+  height: 6px;
+  background: #ddd;
+  border-radius: 5px;
+  outline: none;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.price-range-wrapper input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #ff4500; /* Bouton orange */
+  cursor: pointer;
+}
+
+.price-range-wrapper input[type="range"]::-moz-range-thumb {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #ff4500; /* Bouton orange */
+  cursor: pointer;
+}
+
+.price-range-wrapper span {
+  font-size: 14px;
+  color: #333;
+  font-weight: bold;
+}
+
+/* Grille pour les marques */
+/* Marque - Conteneur déroulant avec défilement */
+/* Marque - Conteneur déroulant avec défilement uniquement vertical */
+.brand-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* 5 colonnes fixes */
+  gap: 15px; /* Espacement entre les éléments */
+  margin: 10px 0;
+  padding: 10px;
+  max-height: 300px; /* Limite la hauteur totale du menu */
+  overflow-y: auto; /* Ajoute une barre de défilement verticale */
+  overflow-x: hidden; /* Désactive le défilement horizontal */
+  background-color: #f5f5f5; /* Optionnel, fond clair */
+  border-radius: 8px; /* Bords arrondis */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Ombre légère */
+}
+
+/* Ajout d'un style personnalisé pour la barre de défilement */
+.brand-grid::-webkit-scrollbar {
+  width: 8px; /* Largeur de la barre */
+}
+
+.brand-grid::-webkit-scrollbar-thumb {
+  background-color: #ff9800; /* Couleur de la barre */
+  border-radius: 4px; /* Coins arrondis */
+}
+
+.brand-grid::-webkit-scrollbar-track {
+  background-color: #e0e0e0; /* Couleur de l'arrière-plan de la barre */
+}
+
+
+/* Grille pour les coupes */
+.fit-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* 5 colonnes fixes */
+  gap: 15px; /* Espacement entre les éléments */
+  margin: 10px 0;
+  padding: 10px;
+  background-color: #f5f5f5; /* Optionnel, fond clair */
+  border-radius: 8px; /* Bords arrondis */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Ombre légère */
+}
+
+
+/* Styles pour les images des types dans le filtre */
+.type-image {
+  width: 80px; /* Ajustez selon vos besoins */
+  height: 80px; /* Ajustez selon vos besoins */
+  object-fit: contain; /* Assure que l'image reste proportionnelle */
+  border-radius: 10px;
+}
+
+.filter-dropdown-item {
+  display: flex;
+  flex-direction: column; /* Aligne en colonne */
+  align-items: center; /* Centre horizontalement */
+  text-align: center; /* Centre le texte */
+  gap: 10px; /* Espace entre l'image et le texte */
+}
+
+.filter-dropdown-item span {
+  font-size: 14px; /* Taille du texte */
+  font-weight: bold;
+  color: #ff5722; /* Couleur du texte */
+  text-transform: capitalize; /* Met la première lettre en majuscule */
+}
+
+.filter-dropdown-item:hover {
+  background-color: #f0f0f0; /* Couleur d'arrière-plan au survol */
+}
+
+.filter-dropdown-item.active {
+  background-color: #e0e0e0; /* Couleur pour l'élément actif */
+  font-weight: bold;
+}
+
+/* Barre de recherche */
+.search-bar-wrapper {
+  display: flex;
+  justify-content: center; /* Centre la barre de recherche */
+  align-items: center;
+  width: 100%;
+  padding-top: 20px; /* Augmente l'espace en haut */
+  margin-bottom: 20px; /* Ajoute de l'espace sous la barre */
+  margin-top: 10px; /* Ajuste selon la hauteur de ta navbar */
+
+}
+
+.search-bar {
+  width: 100%;
+  max-width: 600px;
+  padding: 12px 20px;
+  border: 2px solid #ff6600;
+  border-radius: 8px;
+  font-size: 18px;
+  outline: none;
+  background-color: #1e1e1e;
+  color: white;
+  display: block;
+  margin-top: 20px; /* Augmente la marge pour laisser de la place */
+}
+
+
+.search-bar::placeholder {
+  color: #ccc;
+} 
+
+
+/* Message de la saison */
+/* Message de la saison */
+/* Message de la saison */
+.global-message, .season-message {
+  background-color: #ff6600;
+  color: white;
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 10px 20px;
+  border-radius: 8px;
+  width: fit-content;
+  margin: 60px auto 20px; /* Ajoute un espace en haut pour l’abaisser */
+}
+
+
+
+
+/* 🌟 Conteneur principal du lecteur Spotify */
+.spotify-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+  margin-bottom: 10px; /* Réduit l’espace sous Spotify */
+
+}
+
+/* 🎵 Style du lecteur */
+.spotify-player iframe {
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* 🎧 Lien vers Spotify */
+.spotify-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: bold;
+  color: #1DB954; /* Couleur Spotify */
+  transition: 0.3s ease;
+}
+
+.spotify-link:hover {
+  color: #1ed760;
+  transform: scale(1.1);
+}
