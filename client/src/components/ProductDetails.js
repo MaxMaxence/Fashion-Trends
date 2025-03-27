@@ -12,76 +12,120 @@ const ProductDetails = () => {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [usedItems, setUsedItems] = useState(new Set());
   const [lockedItems, setLockedItems] = useState([]);
+  const [allProducts, setAllProducts] = useState([]);
+  const [seasonTypes, setSeasonTypes] = useState([]);
+  const [typeWarnings, setTypeWarnings] = useState([]);
   const { favorites, toggleFavorite } = useFavorites();
   const [selectedImage, setSelectedImage] = useState("");
 
-  useEffect(() => {
-    const fetchProduct = async () => {
-      try {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/fashion-trends/${id}`);
-        const fetchedProduct = response.data;
-        setProduct({ ...fetchedProduct, isMainItem: true });
+  const allKnownTypes = ['accessories', 'tops', 'cardigan', 'jackets', 'sweaters', 'pants', 'shorts', 'shoes'];
 
-        // Définir l'image principale au chargement
-        if (fetchedProduct.imageUrl) {
-          setSelectedImage(fetchedProduct.imageUrl);
-        }
-      } catch (error) {
-        console.error("Erreur lors de la récupération du produit :", error);
+  const normalizeSeason = (season) => {
+    if (!season) return "";
+    return season
+      .normalize("NFD")
+      .replace(/[^a-zA-Z0-9 ]/g, "")
+      .toLowerCase()
+      .trim();
+  };
+
+  useEffect(() => {
+    const fetchProductAndTypes = async () => {
+      try {
+        const productRes = await axios.get(`${process.env.REACT_APP_API_URL}/fashion-trends/${id}`);
+        const productData = { ...productRes.data, isMainItem: true };
+        setProduct(productData);
+        if (productData.imageUrl) setSelectedImage(productData.imageUrl);
+
+        const allRes = await axios.get(`${process.env.REACT_APP_API_URL}/fashion-trends`);
+        const allItems = allRes.data;
+        setAllProducts(allItems);
+
+        const currentSeason = normalizeSeason(productData.season);
+        const typesForSeason = [
+          ...new Set(
+            allItems
+              .filter(item => item.type && item.season && normalizeSeason(item.season).includes(currentSeason))
+              .map(item => item.type.toLowerCase().trim())
+          )
+        ];
+
+        setSeasonTypes(typesForSeason);
+        setSelectedCategories(typesForSeason);
+      } catch (err) {
+        console.error("Erreur chargement produit ou types:", err);
       }
     };
-    fetchProduct();
+
+    fetchProductAndTypes();
   }, [id]);
 
   if (!product) return <div>Chargement...</div>;
 
-  const isFavorite = favorites.some((fav) => fav.id === product.id);
-
-  const outfitOrder = ['accessories', 'tops', 'jackets', 'sweaters', 'pants', 'shoes'];
+  const isFavorite = favorites.some(fav => fav.id === product.id);
 
   const generateOutfit = async () => {
-    if (!product) return;
-
     try {
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/fashion-trends`);
-      const allProducts = response.data;
+      const season = normalizeSeason(product.season);
+      const selectedTypes = selectedCategories.length > 0 ? selectedCategories : seasonTypes;
 
-      const selectedTypes = selectedCategories.length > 0
-        ? selectedCategories
-        : outfitOrder.filter(type => type !== product.type.toLowerCase());
+      const compatibleItemsByType = {};
+      const missingTypes = [];
 
-      const compatibleItems = allProducts.filter(
-        (item) =>
-          item.id !== product.id &&
-          selectedTypes.includes(item.type.toLowerCase()) &&
-          item.season.toLowerCase() === product.season.toLowerCase() &&
-          !usedItems.has(item.id) &&
-          !lockedItems.some(locked => locked.id === item.id)
-      );
+      for (let type of selectedTypes) {
+        const matches = allProducts.filter((item) => {
+          const itemType = item.type?.toLowerCase().trim();
+          const matchesSeason = normalizeSeason(item.season).includes(season);
+          const isLocked = lockedItems.some(l => l.id === item.id);
+          const isUsed = usedItems.has(item.id);
 
-      const newOutfit = [...lockedItems, product];
+          if (type === "pants") {
+            return ["pants", "short", "shorts"].includes(itemType) && matchesSeason && !isLocked && !isUsed;
+          }
+          if (type === "shorts") {
+            return ["short", "shorts"].includes(itemType) && matchesSeason && !isLocked && !isUsed;
+          }
 
-      const lockedTypes = new Set(lockedItems.map(item => item.type.toLowerCase()));
+          return matchesSeason && itemType === type && !isLocked && !isUsed;
+        });
+
+        if (matches.length === 0) {
+          missingTypes.push(type);
+        }
+
+        compatibleItemsByType[type] = matches;
+      }
+
+      setTypeWarnings(missingTypes);
+
+      const newOutfit = [...lockedItems];
+      const lockedTypes = new Set(lockedItems.map(item => item.type.toLowerCase().trim()));
+
+      if (!lockedTypes.has(product.type.toLowerCase().trim())) {
+        newOutfit.push(product);
+        lockedTypes.add(product.type.toLowerCase().trim());
+      }
 
       selectedTypes.forEach((type) => {
         if (!lockedTypes.has(type)) {
-          const itemsOfType = compatibleItems.filter(item => item.type.toLowerCase() === type);
-          if (itemsOfType.length > 0) {
-            const randomItem = itemsOfType[Math.floor(Math.random() * itemsOfType.length)];
+          const items = compatibleItemsByType[type];
+          if (items && items.length > 0) {
+            const randomItem = items[Math.floor(Math.random() * items.length)];
             newOutfit.push(randomItem);
             usedItems.add(randomItem.id);
           }
         }
       });
 
-      setOutfit([...new Map(newOutfit.map((item) => [item.id, item])).values()]);
+      setOutfit([...new Map(newOutfit.map(item => [item.id, item])).values()]);
       setUsedItems(new Set([...usedItems].slice(-10)));
-    } catch (error) {
-      console.error("Erreur lors de la création de la tenue :", error);
+    } catch (err) {
+      console.error("Erreur génération tenue:", err);
     }
   };
 
   const handleCategorySelect = (category) => {
+    if (!seasonTypes.includes(category)) return;
     setSelectedCategories((prev) =>
       prev.includes(category) ? prev.filter(c => c !== category) : [...prev, category]
     );
@@ -97,10 +141,10 @@ const ProductDetails = () => {
     if (item.isMainItem) return;
 
     setLockedItems((prev) => {
-      const updatedLocks = prev.some((locked) => locked.id === item.id)
-        ? prev.filter((locked) => locked.id !== item.id)
+      const updated = prev.some(lock => lock.id === item.id)
+        ? prev.filter(lock => lock.id !== item.id)
         : [...prev, item];
-      return [...new Map(updatedLocks.map((item) => [item.id, item])).values()];
+      return [...new Map(updated.map(i => [i.id, i])).values()];
     });
   };
 
@@ -112,17 +156,14 @@ const ProductDetails = () => {
     <div className="product-details-page">
       <h2>{product.name}</h2>
       <div className="product-details-container">
-        
-        {/* Galerie d'images */}
         <div className="product-images">
           <img src={selectedImage} alt={product.name} className="main-image" />
-
           <div className="image-thumbnails">
-            {images.map((img, index) => (
+            {images.map((img, i) => (
               <img
-                key={index}
+                key={i}
                 src={img}
-                alt={`${product.name} vue ${index + 1}`}
+                alt={`${product.name} vue ${i + 1}`}
                 className={`thumbnail ${selectedImage === img ? "active" : ""}`}
                 onClick={() => setSelectedImage(img)}
               />
@@ -144,17 +185,19 @@ const ProductDetails = () => {
           <div className="category-selection">
             <h4>Choisissez les articles à générer :</h4>
             <div className="category-list">
-              {outfitOrder
-                .filter(category => category !== product.type.toLowerCase())
-                .map(category => (
+              {allKnownTypes.map(type => {
+                const isAvailable = seasonTypes.includes(type);
+                return (
                   <button
-                    key={category}
-                    className={`category-btn ${selectedCategories.includes(category) ? 'selected' : ''}`}
-                    onClick={() => handleCategorySelect(category)}
+                    key={type}
+                    className={`category-btn ${selectedCategories.includes(type) ? 'selected' : ''} ${!isAvailable ? 'disabled' : ''}`}
+                    onClick={() => handleCategorySelect(type)}
+                    disabled={!isAvailable}
                   >
-                    {category.charAt(0).toUpperCase() + category.slice(1)}
+                    {type === 'shorts' ? 'Short' : type.charAt(0).toUpperCase() + type.slice(1)}
                   </button>
-                ))}
+                );
+              })}
             </div>
           </div>
 
@@ -162,14 +205,20 @@ const ProductDetails = () => {
             Générer une tenue
           </button>
 
+          {typeWarnings.length > 0 && (
+            <div className="type-warnings">
+              <p>Aucun article disponible pour : <strong>{typeWarnings.join(', ')}</strong></p>
+            </div>
+          )}
+
           {outfit.length > 0 && (
             <div className="outfit-section">
               <h3>Tenue suggérée :</h3>
               <div className="outfit-display">
                 {[...new Map(outfit.map((item) => [item.id, item])).values()].map((item) => (
-                  <div 
-                    key={item.id} 
-                    className={`outfit-item ${lockedItems.some((locked) => locked.id === item.id) ? 'locked' : ''}`} 
+                  <div
+                    key={item.id}
+                    className={`outfit-item ${lockedItems.some((locked) => locked.id === item.id) ? 'locked' : ''}`}
                     onClick={() => handleProductClick(item.id)}
                   >
                     <img src={item.imageUrl} alt={item.name} />

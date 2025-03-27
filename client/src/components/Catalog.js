@@ -78,10 +78,13 @@ const Catalog = ({ isSideMenuOpen }) => {
 
         // Correction de l'URL si nécessaire
         if (seasonParam !== normalizedSeason) {
-            console.warn(`🔄 Correction de l'URL: ${seasonParam} -> ${normalizedSeason}`);
-            navigate(`/catalog?season=${normalizedSeason}`, { replace: true });
-            return; // Évite un re-render inutile
+          console.warn(`🔄 Correction de l'URL: ${seasonParam} -> ${normalizedSeason}`);
+          navigate(`/catalog?season=${normalizedSeason}`, { replace: true });
+          // NE PAS faire "return" ici
+          // Laisse le reste s’exécuter avec la bonne saison
+          seasonParam = normalizedSeason; // continue avec la saison corrigée
         }
+        
 
         setSelectedSeason(normalizedSeason);
     } else {
@@ -125,12 +128,19 @@ useEffect(() => {
         console.log("📦 Produits récupérés depuis l'API :", data);
   
         // Normaliser les saisons
-        const normalizedProducts = data.map((product) => ({
-          ...product,
-          seasons: product.season
-            ? product.season.toLowerCase().split(",").map((s) => s.trim())
-            : ["inconnu"],
-        }));
+        // Normaliser les saisons (suppression des accents)
+const normalizedProducts = data.map((product) => ({
+  ...product,
+  seasons: product.season
+    ? product.season
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase()
+        .split(",")
+        .map((s) => s.trim())
+    : ["inconnu"],
+}));
+
   
         console.log("🌞 Produits normalisés avec saisons :", normalizedProducts);
   
